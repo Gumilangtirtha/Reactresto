@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Register API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+        .success {
+            color: green;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test Register API</h1>
+    
+    <div class="form-group">
+        <label for="api-url">API URL:</label>
+        <input type="text" id="api-url" value="http://localhost/project-react-resto/api/simple-register.php">
+    </div>
+    
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" value="Test User">
+    </div>
+    
+    <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" value="testuser">
+    </div>
+    
+    <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" value="testuser@example.com">
+    </div>
+    
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" value="password123">
+    </div>
+    
+    <button id="submit-btn">Test Register</button>
+    <button id="debug-btn">Debug Request</button>
+    
+    <div id="error" class="error"></div>
+    <div id="success" class="success"></div>
+    
+    <h2>Response:</h2>
+    <pre id="response"></pre>
+    
+    <script>
+        document.getElementById('submit-btn').addEventListener('click', async function() {
+            const apiUrl = document.getElementById('api-url').value;
+            const name = document.getElementById('name').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            document.getElementById('error').textContent = '';
+            document.getElementById('success').textContent = '';
+            document.getElementById('response').textContent = 'Loading...';
+            
+            const data = {
+                name,
+                username,
+                email,
+                password,
+                role: 'user'
+            };
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(result, null, 2);
+                
+                if (result.success) {
+                    document.getElementById('success').textContent = 'Registration successful!';
+                } else {
+                    document.getElementById('error').textContent = result.message || 'Registration failed';
+                }
+            } catch (error) {
+                document.getElementById('error').textContent = 'Error: ' + error.message;
+                document.getElementById('response').textContent = 'Error: ' + error.message;
+            }
+        });
+        
+        document.getElementById('debug-btn').addEventListener('click', async function() {
+            const apiUrl = 'http://localhost/project-react-resto/api/debug-register.php';
+            const name = document.getElementById('name').value;
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            document.getElementById('error').textContent = '';
+            document.getElementById('success').textContent = '';
+            document.getElementById('response').textContent = 'Loading...';
+            
+            const data = {
+                name,
+                username,
+                email,
+                password,
+                role: 'user'
+            };
+            
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(result, null, 2);
+                
+                if (result.success) {
+                    document.getElementById('success').textContent = 'Debug successful!';
+                } else {
+                    document.getElementById('error').textContent = result.message || 'Debug failed';
+                }
+            } catch (error) {
+                document.getElementById('error').textContent = 'Error: ' + error.message;
+                document.getElementById('response').textContent = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

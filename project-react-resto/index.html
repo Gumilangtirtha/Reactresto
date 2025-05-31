@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Mobile Legends Hero Management System with epic UI and legendary animations" />
+    <title>Mobile Legends Hero Management System</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Performance optimizations -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="theme-color" content="#6a5acd">
+    <style>
+      /* Critical CSS for initial render */
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #f8f9ff;
+      }
+      .loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(135deg, #f8f9ff 0%, #f0f4ff 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <!-- Initial loading state -->
+      <div class="loading-screen">
+        <div style="text-align: center;">
+          <div style="width: 50px; height: 50px; margin: 0 auto; border: 3px solid rgba(0,0,0,0.1); border-radius: 50%; border-top-color: #6a5acd; animation: spin 1s linear infinite;"></div>
+          <p style="margin-top: 20px; color: #2d3748; font-weight: 500;">Loading...</p>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      // Add passive event listeners for better scrolling performance
+      document.addEventListener('DOMContentLoaded', function() {
+        const supportsPassive = (() => {
+          let passive = false;
+          try {
+            const opts = Object.defineProperty({}, 'passive', {
+              get: function() { passive = true; return true; }
+            });
+            window.addEventListener('testPassive', null, opts);
+            window.removeEventListener('testPassive', null, opts);
+          } catch (e) {}
+          return passive;
+        })();
+
+        if (supportsPassive) {
+          const wheelOpt = { passive: true };
+          const wheelEvent = 'onwheel' in document.createElement('div') ? 'wheel' : 'mousewheel';
+          window.addEventListener(wheelEvent, () => {}, wheelOpt);
+          window.addEventListener('touchstart', () => {}, wheelOpt);
+        }
+      });
+
+      // Add animation keyframe for loading spinner
+      if (!document.querySelector('#loading-spinner-keyframes')) {
+        const style = document.createElement('style');
+        style.id = 'loading-spinner-keyframes';
+        style.textContent = `
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `;
+        document.head.appendChild(style);
+      }
+    </script>
+  </body>
+</html>

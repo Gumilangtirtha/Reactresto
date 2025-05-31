@@ -1,0 +1,4 @@
+2025-05-18 10:23:18 - Method: POST, URI: /project-react-resto/api/v2/login.php
+Headers: {"Host":"localhost","Connection":"keep-alive","Content-Length":"48","sec-ch-ua-platform":"\"Windows\"","User-Agent":"Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Code\/1.100.2 Chrome\/132.0.6834.210 Electron\/34.5.1 Safari\/537.36","Accept":"application\/json","sec-ch-ua":"\"Not A(Brand\";v=\"8\", \"Chromium\";v=\"132\"","Content-Type":"application\/json","sec-ch-ua-mobile":"?0","Origin":"http:\/\/localhost","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"cors","Sec-Fetch-Dest":"empty","Referer":"http:\/\/localhost\/project-react-resto\/api\/v2\/test.html?id=5c43023b-cc7f-4fa7-81c3-297eb1d4913f&vscodeBrowserReqId=1747556585766","Accept-Encoding":"gzip, deflate, br, zstd","Accept-Language":"en-US"}
+Body: {"username":"testuser","password":"password123"}
+-----------------------------------

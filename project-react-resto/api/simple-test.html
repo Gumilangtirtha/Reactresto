@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Test API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Test API</h1>
+    
+    <button id="test-echo">Test Echo API</button>
+    <button id="test-simple-register">Test Simple Register API</button>
+    
+    <h2>Response:</h2>
+    <pre id="response">Click a button to test an API</pre>
+    
+    <script>
+        document.getElementById('test-echo').addEventListener('click', async function() {
+            const data = {
+                name: 'Test User',
+                username: 'testuser',
+                email: 'test@example.com',
+                password: 'password123',
+                role: 'user'
+            };
+            
+            document.getElementById('response').textContent = 'Loading...';
+            
+            try {
+                const response = await fetch('http://localhost/project-react-resto/api/echo.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                document.getElementById('response').textContent = 'Error: ' + error.message;
+            }
+        });
+        
+        document.getElementById('test-simple-register').addEventListener('click', async function() {
+            const data = {
+                name: 'Test User',
+                username: 'testuser' + Date.now(),
+                email: 'testuser' + Date.now() + '@example.com',
+                password: 'password123',
+                role: 'user'
+            };
+            
+            document.getElementById('response').textContent = 'Loading...';
+            
+            try {
+                const response = await fetch('http://localhost/project-react-resto/api/simple-register.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(result, null, 2);
+            } catch (error) {
+                document.getElementById('response').textContent = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<?php
+// Mengaktifkan CORS agar API bisa diakses dari domain yang berbeda
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+header("Content-Type: application/json; charset=UTF-8");
+
+// Jika request method adalah OPTIONS, langsung return 200 OK
+if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
+require_once 'config.php';
+
+// Hanya menerima request POST
+if (!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+    sendResponse(405, null, 'Method Not Allowed');
+}
+
+// Ambil data dari request
+$data = getRequestData();
+
+// Debug: Log data yang diterima
+error_log('Register request data: ' . json_encode($data));
+
+// Validasi data
+if (!isset($data['name']) || !isset($data['username']) || !isset($data['email']) || !isset($data['password']) || !isset($data['role'])) {
+    error_log('Register validation failed: Incomplete data');
+    sendResponse(400, null, 'Incomplete data. Name, username, email, password, and role are required');
+}
+
+// Sanitasi data
+$name = htmlspecialchars(trim($data['name']));
+$username = htmlspecialchars(trim($data['username']));
+$email = filter_var($data['email'], FILTER_SANITIZE_EMAIL);
+$password = $data['password']; // Password akan di-hash
+$role = htmlspecialchars(trim($data['role']));
+
+// Validasi email
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    error_log('Invalid email format: ' . $email);
+    sendResponse(400, null, 'Format email tidak valid');
+}
+
+// Validasi password
+if (strlen($password) < 6) {
+    error_log('Password too short: ' . strlen($password) . ' characters');
+    sendResponse(400, null, 'Password harus minimal 6 karakter');
+}
+
+// Validasi role
+if ($role !== 'admin' && $role !== 'user') {
+    error_log('Invalid role: ' . $role);
+    // Default ke 'user' jika role tidak valid
+    $role = 'user';
+}
+
+// Hash password
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+// Koneksi ke database
+$conn = getConnection();
+
+// Cek apakah username atau email sudah digunakan
+$stmt = $conn->prepare("SELECT id, username, email FROM users WHERE username = ? OR email = ?");
+if (!$stmt) {
+    error_log('Prepare statement failed: ' . $conn->error);
+    $conn->close();
+    sendResponse(500, null, 'Database error: Failed to prepare statement');
+    exit;
+}
+
+$stmt->bind_param("ss", $username, $email);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $existingUser = $result->fetch_assoc();
+    $stmt->close();
+    $conn->close();
+
+    if ($existingUser['username'] === $username) {
+        error_log('Username already exists: ' . $username);
+        sendResponse(409, null, 'Username sudah digunakan');
+    } else {
+        error_log('Email already exists: ' . $email);
+        sendResponse(409, null, 'Email sudah digunakan');
+    }
+}
+
+// Siapkan timestamp
+$now = date('Y-m-d H:i:s');
+
+// Insert user baru
+$stmt = $conn->prepare("INSERT INTO users (name, username, email, password, role, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+if (!$stmt) {
+    error_log('Prepare statement failed: ' . $conn->error);
+    $conn->close();
+    sendResponse(500, null, 'Database error: Failed to prepare statement');
+    exit;
+}
+
+$stmt->bind_param("sssssss", $name, $username, $email, $hashedPassword, $role, $now, $now);
+
+// Debug: Log data yang akan diinsert
+error_log("Inserting user: name=$name, username=$username, email=$email, role=$role, created_at=$now");
+
+if ($stmt->execute()) {
+    $userId = $conn->insert_id;
+    error_log("User inserted successfully with ID: $userId");
+    $stmt->close();
+
+    // Ambil data user yang baru dibuat (tanpa password)
+    $stmt = $conn->prepare("SELECT id, name, username, email, role, created_at, updated_at FROM users WHERE id = ?");
+
+    if (!$stmt) {
+        error_log('Prepare statement failed: ' . $conn->error);
+        $conn->close();
+        sendResponse(500, null, 'Database error: Failed to prepare statement');
+        exit;
+    }
+
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if (!$result) {
+        error_log('Get result failed: ' . $stmt->error);
+        $stmt->close();
+        $conn->close();
+        sendResponse(500, null, 'Database error: Failed to get result');
+        exit;
+    }
+
+    $user = $result->fetch_assoc();
+
+    if (!$user) {
+        error_log('User not found after insert');
+        $stmt->close();
+        $conn->close();
+        sendResponse(500, null, 'Database error: User not found after insert');
+        exit;
+    }
+
+    error_log("User data retrieved: " . json_encode($user));
+
+    $stmt->close();
+    $conn->close();
+    sendResponse(201, $user, 'User registered successfully');
+} else {
+    error_log('Execute failed: ' . $stmt->error);
+    $stmt->close();
+    $conn->close();
+    sendResponse(500, null, 'Failed to register user: ' . $conn->error);
+}

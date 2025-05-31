@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API v2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .form-container {
+            flex: 1;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+        .success {
+            color: green;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Test API v2</h1>
+    
+    <div class="container">
+        <div class="form-container">
+            <h2>Register</h2>
+            <div class="form-group">
+                <label for="reg-name">Nama:</label>
+                <input type="text" id="reg-name" value="Test User">
+            </div>
+            
+            <div class="form-group">
+                <label for="reg-username">Username:</label>
+                <input type="text" id="reg-username" value="testuser">
+            </div>
+            
+            <div class="form-group">
+                <label for="reg-email">Email:</label>
+                <input type="email" id="reg-email" value="testuser@example.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="reg-password">Password:</label>
+                <input type="password" id="reg-password" value="password123">
+            </div>
+            
+            <button id="register-btn">Register</button>
+            <div id="register-error" class="error"></div>
+            <div id="register-success" class="success"></div>
+        </div>
+        
+        <div class="form-container">
+            <h2>Login</h2>
+            <div class="form-group">
+                <label for="login-username">Username:</label>
+                <input type="text" id="login-username" value="testuser">
+            </div>
+            
+            <div class="form-group">
+                <label for="login-password">Password:</label>
+                <input type="password" id="login-password" value="password123">
+            </div>
+            
+            <button id="login-btn">Login</button>
+            <div id="login-error" class="error"></div>
+            <div id="login-success" class="success"></div>
+        </div>
+    </div>
+    
+    <h2>Response:</h2>
+    <pre id="response">Click a button to test an API</pre>
+    
+    <script>
+        document.getElementById('register-btn').addEventListener('click', async function() {
+            const name = document.getElementById('reg-name').value;
+            const username = document.getElementById('reg-username').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+            
+            document.getElementById('register-error').textContent = '';
+            document.getElementById('register-success').textContent = '';
+            document.getElementById('response').textContent = 'Loading...';
+            
+            const data = {
+                name,
+                username,
+                email,
+                password,
+                role: 'user'
+            };
+            
+            try {
+                const response = await fetch('register.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(result, null, 2);
+                
+                if (result.success) {
+                    document.getElementById('register-success').textContent = 'Registration successful!';
+                } else {
+                    document.getElementById('register-error').textContent = result.message || 'Registration failed';
+                }
+            } catch (error) {
+                document.getElementById('register-error').textContent = 'Error: ' + error.message;
+                document.getElementById('response').textContent = 'Error: ' + error.message;
+            }
+        });
+        
+        document.getElementById('login-btn').addEventListener('click', async function() {
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+            
+            document.getElementById('login-error').textContent = '';
+            document.getElementById('login-success').textContent = '';
+            document.getElementById('response').textContent = 'Loading...';
+            
+            const data = {
+                username,
+                password
+            };
+            
+            try {
+                const response = await fetch('login.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                document.getElementById('response').textContent = JSON.stringify(result, null, 2);
+                
+                if (result.success) {
+                    document.getElementById('login-success').textContent = 'Login successful!';
+                } else {
+                    document.getElementById('login-error').textContent = result.message || 'Login failed';
+                }
+            } catch (error) {
+                document.getElementById('login-error').textContent = 'Error: ' + error.message;
+                document.getElementById('response').textContent = 'Error: ' + error.message;
+            }
+        });
+    </script>
+</body>
+</html>

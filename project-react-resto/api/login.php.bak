@@ -1,0 +1,78 @@
+<?php
+// Mengaktifkan CORS agar API bisa diakses dari domain yang berbeda
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: POST, GET, OPTIONS, PUT, DELETE");
+header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+header("Content-Type: application/json; charset=UTF-8");
+
+// Jika request method adalah OPTIONS, langsung return 200 OK
+if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit;
+}
+
+require_once 'config.php';
+
+// Hanya menerima request POST
+if (!isset($_SERVER['REQUEST_METHOD']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
+    sendResponse(405, null, 'Method Not Allowed');
+}
+
+// Ambil data dari request
+$data = getRequestData();
+
+// Debug: Log data yang diterima
+error_log('Login request data: ' . json_encode($data));
+
+// Validasi data
+if (!isset($data['username']) || !isset($data['password'])) {
+    error_log('Login validation failed: Username or password missing');
+    sendResponse(400, null, 'Username and password are required');
+}
+
+// Sanitasi data
+$username = htmlspecialchars(trim($data['username']));
+$password = $data['password'];
+
+// Koneksi ke database
+$conn = getConnection();
+
+// Cari user berdasarkan username atau email
+$stmt = $conn->prepare("SELECT id, name, username, email, password, role, created_at, updated_at FROM users WHERE username = ? OR email = ?");
+$stmt->bind_param("ss", $username, $username);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    $stmt->close();
+    $conn->close();
+    sendResponse(401, null, 'Invalid username or password');
+}
+
+$user = $result->fetch_assoc();
+$stmt->close();
+
+// Verifikasi password
+if (!password_verify($password, $user['password'])) {
+    $conn->close();
+    sendResponse(401, null, 'Invalid username or password');
+}
+
+// Hapus password dari data user
+unset($user['password']);
+
+// Generate token sederhana (dalam aplikasi nyata, gunakan JWT)
+$token = bin2hex(random_bytes(32));
+
+// Simpan token ke database
+$stmt = $conn->prepare("UPDATE users SET remember_token = ? WHERE id = ?");
+$stmt->bind_param("si", $token, $user['id']);
+$stmt->execute();
+$stmt->close();
+$conn->close();
+
+// Kirim response dengan data user dan token
+sendResponse(200, [
+    'user' => $user,
+    'token' => $token
+], 'Login successful');

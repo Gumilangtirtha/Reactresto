@@ -1,0 +1,85 @@
+TODO LIST FOR RESTAURANT CUSTOMER MANAGEMENT SYSTEM
+
+BACKEND TASKS:
+1. Set up MySQL database with necessary tables
+   - [x] Create 'apirestoran' database
+   - [x] Create 'pelanggans' table for customer data
+   - [x] Create 'users' table for authentication
+   - [x] Create 'menus' table for restaurant menu items
+   - [x] Create 'migrations' table for tracking database changes
+
+2. Create API endpoints
+   - [x] GET endpoint to retrieve all customers
+   - [x] SHOW endpoint to retrieve a single customer
+   - [x] POST endpoint to add a new customer
+   - [x] PUT endpoint to update an existing customer
+   - [x] DELETE endpoint to remove a customer
+
+3. Implement data validation
+   - [x] Validate required fields
+   - [ ] Add more comprehensive validation rules
+   - [ ] Implement sanitization for security
+
+4. Error handling
+   - [x] Basic error handling for API requests
+   - [ ] Implement more detailed error messages
+   - [ ] Add logging for server-side errors
+
+FRONTEND TASKS:
+1. Set up React application
+   - [x] Initialize project with Vite
+   - [x] Install necessary dependencies (React Router, Axios, Bootstrap)
+   - [x] Create basic folder structure
+
+2. Create components
+   - [x] Create CustomerManagement component
+   - [x] Implement customer list view
+   - [x] Create form for adding/editing customers
+   - [x] Add confirmation dialog for deletion
+
+3. Implement CRUD operations
+   - [x] GET functionality to fetch and display customers
+   - [x] SHOW functionality to view a single customer
+   - [x] POST functionality to add new customers
+   - [x] PUT functionality to update existing customers
+   - [x] DELETE functionality to remove customers
+
+4. UI/UX improvements
+   - [x] Style components with Bootstrap
+   - [x] Add loading indicators
+   - [x] Implement error messages
+   - [x] Add success notifications
+   - [ ] Improve mobile responsiveness
+   - [ ] Add form validation on the client side
+
+FUTURE ENHANCEMENTS:
+1. Authentication
+   - [ ] Implement user login/logout
+   - [ ] Add role-based access control
+
+2. Additional features
+   - [ ] Add search functionality
+   - [ ] Implement pagination for large datasets
+   - [ ] Add sorting options for customer list
+   - [ ] Create dashboard with statistics
+
+3. Performance optimizations
+   - [ ] Implement caching for API responses
+   - [ ] Optimize database queries
+   - [ ] Add lazy loading for components
+
+4. Testing
+   - [ ] Write unit tests for components
+   - [ ] Add integration tests for API endpoints
+   - [ ] Implement end-to-end testing
+
+DEPLOYMENT:
+1. Prepare for production
+   - [ ] Build optimized production version
+   - [ ] Set up proper environment variables
+   - [ ] Configure server for production
+
+2. Documentation
+   - [ ] Create API documentation
+   - [ ] Add setup instructions
+   - [ ] Document code with comments

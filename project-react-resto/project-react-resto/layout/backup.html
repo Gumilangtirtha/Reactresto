@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backup Layout</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        footer {
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            border-radius: 0 0 5px 5px;
+            margin-top: 20px;
+        }
+        .content {
+            padding: 20px;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .btn {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .btn-get {
+            background-color: #1E88E5;
+            color: white;
+        }
+        .btn-show {
+            background-color: #757575;
+            color: white;
+        }
+        .btn-post {
+            background-color: #43A047;
+            color: white;
+        }
+        .btn-delete {
+            background-color: #E53935;
+            color: white;
+        }
+        .btn-update {
+            background-color: #FFC107;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Restaurant Customer Management - Backup Layout</h1>
+        </header>
+        
+        <div class="content">
+            <h2>CRUD Operations</h2>
+            
+            <div class="btn-group">
+                <button class="btn btn-get">GET</button>
+                <button class="btn btn-show">SHOW</button>
+                <button class="btn btn-post">POST</button>
+                <button class="btn btn-delete">DELETE</button>
+                <button class="btn btn-update">UPDATE</button>
+            </div>
+            
+            <div class="customer-list">
+                <h3>Customer List</h3>
+                <table border="1" cellpadding="10" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Phone</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>John Doe</td>
+                            <td>123 Main St, City</td>
+                            <td>555-1234</td>
+                            <td>
+                                <button>View</button>
+                                <button>Edit</button>
+                                <button>Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Jane Smith</td>
+                            <td>456 Oak Ave, Town</td>
+                            <td>555-5678</td>
+                            <td>
+                                <button>View</button>
+                                <button>Edit</button>
+                                <button>Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Restaurant Customer Database System - Backup Layout</p>
+        </footer>
+    </div>
+</body>
+</html>

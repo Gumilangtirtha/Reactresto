@@ -1,0 +1,12 @@
+2025-05-18 09:42:43 - Method: POST, URI: /project-react-resto/api/v2/register.php
+Headers: {"Host":"localhost","Connection":"keep-alive","Content-Length":"112","sec-ch-ua-platform":"\"Windows\"","User-Agent":"Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/136.0.0.0 Safari\/537.36 Edg\/136.0.0.0","Accept":"application\/json","sec-ch-ua":"\"Chromium\";v=\"136\", \"Microsoft Edge\";v=\"136\", \"Not.A\/Brand\";v=\"99\"","Content-Type":"application\/json","sec-ch-ua-mobile":"?0","Origin":"http:\/\/localhost","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"cors","Sec-Fetch-Dest":"empty","Referer":"http:\/\/localhost\/project-react-resto\/api\/v2\/test.html","Accept-Encoding":"gzip, deflate, br, zstd","Accept-Language":"en-US,en;q=0.9,id;q=0.8"}
+Body: {"name":"Test User","username":"testuser","email":"testuser@example.com","password":"password123","role":"user"}
+-----------------------------------
+2025-05-18 10:20:02 - Method: POST, URI: /project-react-resto/api/v2/register.php
+Headers: {"Content-Type":"application\/json","User-Agent":"Mozilla\/5.0 (Windows NT; Windows NT 10.0; en-US) WindowsPowerShell\/5.1.22621.4391","Host":"localhost","Content-Length":"118","Connection":"Keep-Alive"}
+Body: {"name":"Test User","username":"testuser123","email":"testuser123@example.com","password":"password123","role":"user"}
+-----------------------------------
+2025-05-18 10:23:12 - Method: POST, URI: /project-react-resto/api/v2/register.php
+Headers: {"Host":"localhost","Connection":"keep-alive","Content-Length":"112","sec-ch-ua-platform":"\"Windows\"","User-Agent":"Mozilla\/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit\/537.36 (KHTML, like Gecko) Code\/1.100.2 Chrome\/132.0.6834.210 Electron\/34.5.1 Safari\/537.36","Accept":"application\/json","sec-ch-ua":"\"Not A(Brand\";v=\"8\", \"Chromium\";v=\"132\"","Content-Type":"application\/json","sec-ch-ua-mobile":"?0","Origin":"http:\/\/localhost","Sec-Fetch-Site":"same-origin","Sec-Fetch-Mode":"cors","Sec-Fetch-Dest":"empty","Referer":"http:\/\/localhost\/project-react-resto\/api\/v2\/test.html?id=5c43023b-cc7f-4fa7-81c3-297eb1d4913f&vscodeBrowserReqId=1747556585766","Accept-Encoding":"gzip, deflate, br, zstd","Accept-Language":"en-US"}
+Body: {"name":"Test User","username":"testuser","email":"testuser@example.com","password":"password123","role":"user"}
+-----------------------------------

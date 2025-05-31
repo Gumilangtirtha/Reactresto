@@ -1,0 +1,26 @@
+-- Create orders table
+CREATE TABLE IF NOT EXISTS orders (
+    id_order INT AUTO_INCREMENT PRIMARY KEY,
+    id_pelanggan INT NOT NULL,
+    tanggal_order DATETIME NOT NULL,
+    total DECIMAL(10, 2) NOT NULL DEFAULT 0,
+    bayar DECIMAL(10, 2) NOT NULL DEFAULT 0,
+    kembali DECIMAL(10, 2) NOT NULL DEFAULT 0,
+    status INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_pelanggan) REFERENCES pelanggans(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Create order_details table
+CREATE TABLE IF NOT EXISTS order_details (
+    id_order_detail INT AUTO_INCREMENT PRIMARY KEY,
+    id_order INT NOT NULL,
+    id_menu INT NOT NULL,
+    jumlah INT NOT NULL,
+    harga_jual DECIMAL(10, 2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_order) REFERENCES orders(id_order),
+    FOREIGN KEY (id_menu) REFERENCES menus(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

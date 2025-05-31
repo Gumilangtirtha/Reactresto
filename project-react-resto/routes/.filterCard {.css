@@ -1,0 +1,22 @@
+.filterCard {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 0.5rem;
+}
+
+.filterCard form {
+  margin-bottom: 0;
+}
+
+.table {
+  margin-top: 1rem;
+}
+
+.tableHeader {
+  background-color: #f8f9fa;
+}
+
+.totalRow {
+  font-weight: bold;
+  background-color: #f8f9fa;
+}
